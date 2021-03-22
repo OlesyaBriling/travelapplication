@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.hateoas.EntityModel;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 @RestController
 public class PlacesController {
 
@@ -34,8 +36,9 @@ public class PlacesController {
                 .map(assembler ::toModel)
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(places, linkTo(methodOn(PlacesController.class).all()).withSelfRel());
+        return (Collection<EntityModel<Places>>) CollectionModel.of(places, linkTo(methodOn(PlacesController.class).all()).withSelfRel());
     }
+
 
     @GetMapping("/places/{id}")
     EntityModel<Places> one(@PathVariable Long id) {
